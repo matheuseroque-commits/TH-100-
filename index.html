@@ -1,1 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automação · Chão de fábrica</title>
+  <!-- Fontes limpas e modernas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <style>
+    /* ========== VARIÁVEIS (modo claro / escuro) ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    :root {
+      /* Tons terrosos - claro */
+      --bg-body: #f6efe8;
+      --bg-surface: #ffffff;
+      --bg-card: #fcf9f5;
+      --bg-tab: #e8ddd2;
+      --text-primary: #3b2e26;
+      --text-secondary: #5a4a3d;
+      --border-light: #d6cbbc;
+      --shadow: 0 8px 20px rgba(100, 70, 50, 0.08);
+      --shadow-hover: 0 16px 32px rgba(90, 60, 40, 0.18);
+      --accent: #b87c5a;
+      --accent-hover: #a06a4a;
+      --card-bg: #faf3ec;
+      --toggle-bg: #d6cbbc;
+      --toggle-dot: #fcf9f5;
+      --engrenagem-color: #2d1f16;
+    }
+
+    body.dark {
+      --bg-body: #2a221d;
+      --bg-surface: #3d332b;
+      --bg-card: #4d4036;
+      --bg-tab: #5a4c3f;
+      --text-primary: #efe6dc;
+      --text-secondary: #d4c8bc;
+      --border-light: #6b5d4f;
+      --shadow: 0 8px 20px rgba(0,0,0,0.5);
+      --shadow-hover: 0 16px 32px rgba(0,0,0,0.7);
+      --accent: #c9956f;
+      --accent-hover: #dbaa83;
+      --card-bg: #4d3f35;
+      --toggle-bg: #5f5244;
+      --toggle-dot: #e8ddd2;
+      --engrenagem-color: #ece2d7;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      transition: background 0.25s ease, color 0.2s ease;
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* container principal */
+    .app {
+      max-width: 1200px;
+      width: 100%;
+      background: var(--bg-surface);
+      border-radius: 2.5rem;
+      padding: 2rem 2rem 2.5rem;
+      box-shadow: var(--shadow);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      gap: 1rem 0.5rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gear {
+      width: 42px;
+      height: 42px;
+      fill: var(--engrenagem-color);
+      animation: spin 6s linear infinite;
+      transition: fill 0.2s ease;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .site-title {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      transition: color 0.2s ease;
+    }
+
+    /* toggle switch */
+    .toggle-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toggle-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .toggle-switch {
+      width: 52px;
+      height: 28px;
+      background: var(--toggle-bg);
+      border-radius: 40px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .toggle-switch .dot {
+      width: 22px;
+      height: 22px;
+      background: var(--toggle-dot);
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.25s ease, background 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    body.dark .toggle-switch .dot {
+      transform: translateX(24px);
+    }
+
+    /* ===== TABS ===== */
+    .tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--bg-tab);
+      padding: 0.4rem;
+      border-radius: 60px;
+      margin-bottom: 2.2rem;
+      transition: background 0.2s ease;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.75rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tab-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      transition: background 0.2s ease, color 0.2s;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    body.dark .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeSlide 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CARDS (cabos) ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 1.8rem;
+      padding: 1.8rem 1.2rem 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.2s;
+      cursor: pointer;
+      border: 1px solid var(--border-light);
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .card .card-sub {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .card-extra {
+      margin-top: 1.2rem;
+      background: var(--bg-surface);
+      padding: 0.9rem 1rem;
+      border-radius: 1.2rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      border-left: 4px solid var(--accent);
+      text-align: left;
+      display: none;
+      animation: fadeSlide 0.3s ease;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+      transition: background 0.2s;
+    }
+
+    .card-extra.show {
+      display: block;
+    }
+
+    /* ===== TOPOLOGIAS ===== */
+    .topo-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.5rem 0 1.8rem;
+    }
+
+    .topo-btn {
+      background: var(--bg-tab);
+      border: none;
+      padding: 0.8rem 2.2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: 'Inter', sans-serif;
+      box-shadow: var(--shadow);
+      border: 1px solid transparent;
+    }
+
+    .topo-btn.active {
+      background: var(--accent);
+      color: #fcf9f5;
+      border-color: var(--accent-hover);
+      box-shadow: 0 6px 14px rgba(184, 124, 90, 0.25);
+    }
+    body.dark .topo-btn.active {
+      background: var(--accent);
+      color: #1f1813;
+    }
+
+    .topo-btn:hover {
+      transform: translateY(-2px);
+      background: var(--accent-hover);
+      color: #fcf9f5;
+    }
+
+    .topo-detail {
+      background: var(--bg-card);
+      border-radius: 2rem;
+      padding: 1.8rem 2rem;
+      border: 1px solid var(--border-light);
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .topo-detail h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .topo-detail p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .vantagens {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      margin-top: 0.5rem;
+    }
+    .vantagens ul {
+      list-style: none;
+      padding-left: 0;
+      flex: 1 1 180px;
+    }
+    .vantagens ul li {
+      padding: 0.3rem 0 0.3rem 1.8rem;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23b87c5a" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
+      background-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+    .vantagens ul:last-child li {
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23b87c5a" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>') left center no-repeat;
+      background-size: 1.2rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ===== CALCULADORA ===== */
+    .calculator {
+      margin-top: 3.2rem;
+      background: var(--bg-card);
+      border-radius: 2rem;
+      padding: 2rem 2rem 2.2rem;
+      border: 1px solid var(--border-light);
+      transition: background 0.2s;
+    }
+
+    .calculator h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      color: var(--text-primary);
+    }
+
+    .calc-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem 2.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .calc-option {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .calc-option label {
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .calc-option div {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .calc-option input[type="radio"] {
+      accent-color: var(--accent);
+      width: 18px;
+      height: 18px;
+      margin-right: 0.2rem;
+      cursor: pointer;
+    }
+
+    .calc-btn {
+      background: var(--accent);
+      border: none;
+      color: #fcf9f5;
+      font-weight: 600;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 4px 10px rgba(184, 124, 90, 0.2);
+      font-family: 'Inter', sans-serif;
+    }
+    body.dark .calc-btn {
+      color: #1f1813;
+    }
+    .calc-btn:hover {
+      background: var(--accent-hover);
+      transform: scale(1.01);
+    }
+
+    .result-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem 1.8rem;
+      background: var(--bg-surface);
+      border-radius: 1.5rem;
+      border-left: 6px solid var(--accent);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      display: none;
+    }
+
+    .result-box.show {
+      display: block;
+      animation: fadeSlide 0.3s ease;
+    }
+
+    .result-box strong {
+      display: block;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+    }
+    .result-box span {
+      color: var(--text-secondary);
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    /* ===== RESPONSIVO ===== */
+    @media (max-width: 700px) {
+      .app { padding: 1.5rem 1rem; }
+      .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .tabs { flex-direction: column; border-radius: 32px; gap: 0.2rem; }
+      .tab-btn { text-align: center; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .topo-buttons { flex-direction: column; }
+      .topo-btn { width: 100%; text-align: center; }
+      .calc-group { flex-direction: column; gap: 1rem; }
+      .vantagens { flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      .site-title { font-size: 1.6rem; }
+      .gear { width: 34px; height: 34px; }
+      .calc-option div { flex-wrap: wrap; }
+    }
+
+    /* extras */
+    .mt-1 { margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- cabeçalho -->
+    <header class="header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg class="gear" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4ZM12 2C14.2 2 16 3.8 16 6C16 8.2 14.2 10 12 10C9.8 10 8 8.2 8 6C8 3.8 9.8 2 12 2ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16ZM12 14C14.2 14 16 15.8 16 18C16 20.2 14.2 22 12 22C9.8 22 8 20.2 8 18C8 15.8 9.8 14 12 14ZM12 9C10.9 9 10 9.9 10 11C10 12.1 10.9 13 12 13C13.1 13 14 12.1 14 11C14 9.9 13.1 9 12 9ZM12 7C14.2 7 16 8.8 16 11C16 13.2 14.2 15 12 15C9.8 15 8 13.2 8 11C8 8.8 9.8 7 12 7Z"/>
+          </svg>
+        </div>
+        <span class="site-title">Automação</span>
+      </div>
+      <div class="toggle-wrapper">
+        <span class="toggle-label">Claro</span>
+        <div class="toggle-switch" id="toggleSwitch" role="button" tabindex="0" aria-label="Alternar modo claro/escuro">
+          <div class="dot"></div>
+        </div>
+        <span class="toggle-label">Escuro</span>
+      </div>
+    </header>
+
+    <!-- TABS -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="cabos" role="tab">Cabos Industriais</button>
+      <button class="tab-btn" data-tab="topologias" role="tab">Topologias</button>
+    </div>
+
+    <!-- ABAS CONTEÚDO -->
+    <!-- CABOS -->
+    <div class="tab-content active" id="tab-cabos" role="tabpanel">
+      <div class="cards-grid">
+        <div class="card" data-card="trancado">
+          <h3>Par Trançado</h3>
+          <div class="card-sub">Clique para detalhe</div>
+          <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos.</div>
+        </div>
+        <div class="card" data-card="fibra">
+          <h3>Fibra Óptica</h3>
+          <div class="card-sub">Clique para detalhe</div>
+          <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial.</div>
+        </div>
+        <div class="card" data-card="wireless">
+          <h3>Wireless</h3>
+          <div class="card-sub">Clique para detalhe</div>
+          <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso, com bom sinal e segurança.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPOLOGIAS -->
+    <div class="tab-content" id="tab-topologias" role="tabpanel">
+      <div class="topo-buttons">
+        <button class="topo-btn active" data-topo="estrela">⭐ Layout em Estrela</button>
+        <button class="topo-btn" data-topo="barramento">➖ Layout em Barramento</button>
+      </div>
+      <div class="topo-detail" id="topoDetail">
+        <!-- preenchido via js -->
+      </div>
+    </div>
+
+    <!-- CALCULADORA / ASSISTENTE -->
+    <div class="calculator">
+      <h3>🧩 Assistente de Recomendação</h3>
+      <div class="calc-group">
+        <div class="calc-option">
+          <label>Minha fábrica tem muito ruído elétrico?</label>
+          <div>
+            <label><input type="radio" name="ruido" value="sim"> Sim</label>
+            <label><input type="radio" name="ruido" value="nao" checked> Não</label>
+          </div>
+        </div>
+        <div class="calc-option">
+          <label>A distância entre os pontos é longa?</label>
+          <div>
+            <label><input type="radio" name="distancia" value="sim"> Sim</label>
+            <label><input type="radio" name="distancia" value="nao" checked> Não</label>
+          </div>
+        </div>
+      </div>
+      <button class="calc-btn" id="calcBtn">Calcular Recomendação</button>
+      <div class="result-box" id="resultBox">
+        <strong id="resultTitle"></strong>
+        <span id="resultDesc"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ----- DARK MODE TOGGLE -----
+      const toggle = document.getElementById('toggleSwitch');
+      const body = document.body;
+
+      function setTheme(theme) {
+        if (theme === 'dark') {
+          body.classList.add('dark');
+        } else {
+          body.classList.remove('dark');
+        }
+        localStorage.setItem('aut-theme', theme);
+      }
+
+      toggle.addEventListener('click', function(e) {
+        const isDark = body.classList.contains('dark');
+        setTheme(isDark ? 'light' : 'dark');
+      });
+
+      // carregar tema salvo
+      const saved = localStorage.getItem('aut-theme');
+      if (saved) {
+        setTheme(saved);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      }
+
+      // ----- TABS -----
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = {
+        cabos: document.getElementById('tab-cabos'),
+        topologias: document.getElementById('tab-topologias')
+      };
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          const tab = this.dataset.tab;
+          Object.keys(tabContents).forEach(key => {
+            tabContents[key].classList.toggle('active', key === tab);
+          });
+        });
+      });
+
+      // ----- CARDS CABOS (toggle extra) -----
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('click', function(e) {
+          // não dispara se clicar no extra (para evitar toggle duplo)
+          if (e.target.closest('.card-extra')) return;
+          const extra = this.querySelector('.card-extra');
+          if (extra) {
+            extra.classList.toggle('show');
+          }
+        });
+      });
+
+      // ----- TOPOLOGIAS (estrela / barramento) -----
+      const topoBtns = document.querySelectorAll('.topo-btn');
+      const topoDetail = document.getElementById('topoDetail');
+
+      const topoData = {
+        estrela: {
+          titulo: '⭐ Layout em Estrela',
+          descricao: 'Cada dispositivo se conecta a um switch ou hub central. No chão de fábrica, é comum em células de produção e ilhas de automação, oferecendo alta flexibilidade.',
+          vantagens: ['Isolamento de falhas', 'Fácil manutenção', 'Expansão simples'],
+          desvantagens: ['Dependência do switch central', 'Mais cabos necessários']
+        },
+        barramento: {
+          titulo: '➖ Layout em Barramento',
+          descricao: 'Todos os dispositivos compartilham um único cabo backbone. Usado em redes RS-485, Modbus e em sistemas mais antigos ou com poucos nós.',
+          vantagens: ['Menos cabos', 'Custo reduzido', 'Simples para pequenas redes'],
+          desvantagens: ['Falha no cabo afeta toda a rede', 'Limite de dispositivos', 'Dificuldade em isolar problemas']
+        }
+      };
+
+      function renderTopo(topoKey) {
+        const data = topoData[topoKey];
+        if (!data) return;
+        topoDetail.innerHTML = `
+          <h4>${data.titulo}</h4>
+          <p>${data.descricao}</p>
+          <div class="vantagens">
+            <ul><strong>✅ Vantagens</strong>${data.vantagens.map(v => `<li>${v}</li>`).join('')}</ul>
+            <ul><strong>⚠️ Desvantagens</strong>${data.desvantagens.map(d => `<li>${d}</li>`).join('')}</ul>
+          </div>
+        `;
+      }
+
+      topoBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          topoBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          const topo = this.dataset.topo;
+          renderTopo(topo);
+        });
+      });
+
+      // inicializar topo com estrela
+      renderTopo('estrela');
+
+      // ----- CALCULADORA / ASSISTENTE -----
+      const calcBtn = document.getElementById('calcBtn');
+      const resultBox = document.getElementById('resultBox');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultDesc = document.getElementById('resultDesc');
+
+      function getSelectedValue(name) {
+        const radios = document.querySelectorAll(`input[name="${name}"]`);
+        for (let r of radios) {
+          if (r.checked) return r.value;
+        }
+        return 'nao';
+      }
+
+      calcBtn.addEventListener('click', function() {
+        const ruido = getSelectedValue('ruido');
+        const distancia = getSelectedValue('distancia');
+
+        let recomendacao = '';
+        let explicacao = '';
+
+        if (ruido === 'sim' && distancia === 'sim') {
+          recomendacao = 'Fibra Óptica';
+          explicacao = 'Imune a ruídos eletromagnéticos e ideal para longas distâncias.';
+        } else if (ruido === 'sim' && distancia === 'nao') {
+          recomendacao = 'Par Trançado Blindado (STP)';
+          explicacao = 'Protege contra o ruído em curtas/médias distâncias.';
+        } else if (ruido === 'nao' && distancia === 'sim') {
+          recomendacao = 'Fibra Óptica ou Wireless de Longo Alcance';
+          explicacao = 'Foco na cobertura da distância.';
+        } else { // ruido = não e distancia = não
+          recomendacao = 'Par Trançado Comum (UTP) ou Wireless';
+          explicacao = 'Solução de menor custo e fácil instalação.';
+        }
+
+        resultTitle.innerText = `✅ ${recomendacao}`;
+        resultDesc.innerText = explicacao;
+        resultBox.classList.add('show');
+      });
+
+    })();
+  </script>
+</body>
+</html>
