@@ -2,70 +2,206 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Automação · Chão de fábrica</title>
-  <!-- Fontes limpas e modernas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
   <style>
-    /* ========== VARIÁVEIS (modo claro / escuro) ========== */
+    /* RESET + BASE */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: #e8e0d8; /* neutro base */
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* ========== VARIÁVEIS ========== */
     :root {
-      /* Tons terrosos - claro */
-      --bg-body: #f6efe8;
-      --bg-surface: #ffffff;
-      --bg-card: #fcf9f5;
-      --bg-tab: #e8ddd2;
-      --text-primary: #3b2e26;
-      --text-secondary: #5a4a3d;
-      --border-light: #d6cbbc;
-      --shadow: 0 8px 20px rgba(100, 70, 50, 0.08);
-      --shadow-hover: 0 16px 32px rgba(90, 60, 40, 0.18);
-      --accent: #b87c5a;
-      --accent-hover: #a06a4a;
-      --card-bg: #faf3ec;
-      --toggle-bg: #d6cbbc;
-      --toggle-dot: #fcf9f5;
-      --engrenagem-color: #2d1f16;
+      --bg-body: #e8e0d8;
+      --bg-surface: #f2ede8;
+      --bg-card: #f6f1ec;
+      --bg-tab: #dcd3ca;
+      --text-primary: #2f2a26;
+      --text-secondary: #544d47;
+      --border-light: #cbc0b6;
+      --shadow: 0 8px 20px rgba(60, 50, 40, 0.08);
+      --shadow-hover: 0 16px 32px rgba(50, 40, 30, 0.16);
+      --accent: #8f8074;
+      --accent-hover: #7a6b5f;
+      --card-bg: #f4eee8;
+      --toggle-bg: #ccc0b6;
+      --toggle-dot: #faf5f0;
+      --engrenagem-color: #3d342e;
+      --login-overlay: rgba(30, 25, 20, 0.55);
     }
 
     body.dark {
-      --bg-body: #2a221d;
-      --bg-surface: #3d332b;
-      --bg-card: #4d4036;
-      --bg-tab: #5a4c3f;
-      --text-primary: #efe6dc;
-      --text-secondary: #d4c8bc;
-      --border-light: #6b5d4f;
+      --bg-body: #2b2520;
+      --bg-surface: #3d3530;
+      --bg-card: #4d443d;
+      --bg-tab: #544b44;
+      --text-primary: #eee7e0;
+      --text-secondary: #d5ccc4;
+      --border-light: #6b6058;
       --shadow: 0 8px 20px rgba(0,0,0,0.5);
       --shadow-hover: 0 16px 32px rgba(0,0,0,0.7);
-      --accent: #c9956f;
-      --accent-hover: #dbaa83;
-      --card-bg: #4d3f35;
-      --toggle-bg: #5f5244;
-      --toggle-dot: #e8ddd2;
-      --engrenagem-color: #ece2d7;
+      --accent: #a39588;
+      --accent-hover: #b8aa9c;
+      --card-bg: #4d443d;
+      --toggle-bg: #5f544b;
+      --toggle-dot: #e3dad2;
+      --engrenagem-color: #e8dfd6;
+      --login-overlay: rgba(10, 8, 6, 0.7);
     }
 
     body {
-      background-color: var(--bg-body);
+      background: var(--bg-body);
       color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      transition: background 0.25s ease, color 0.2s ease;
+      transition: background 0.3s ease, color 0.2s ease;
+    }
+
+    /* ===== WRAPPER PRINCIPAL (scroll horizontal) ===== */
+    .app-wrapper {
+      display: flex;
+      flex-wrap: nowrap;
+      width: 200vw;
       min-height: 100vh;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      will-change: transform;
+    }
+
+    /* ===== TELA DE LOGIN (100vw) ===== */
+    .login-screen {
+      width: 100vw;
+      min-height: 100vh;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-body);
+      position: relative;
+      transition: background 0.3s ease;
+      /* camada de paralaxe + blur */
+      overflow: hidden;
+      backdrop-filter: blur(2px);
+    }
+
+    .login-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(160, 140, 120, 0.2), transparent 60%),
+                  radial-gradient(circle at 70% 80%, rgba(120, 100, 80, 0.15), transparent 50%);
+      background-size: 100% 100%;
+      transition: transform 0.2s ease-out;
+      will-change: transform;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .login-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--login-overlay);
+      backdrop-filter: blur(6px) brightness(0.98);
+      -webkit-backdrop-filter: blur(6px) brightness(0.98);
+      transition: backdrop-filter 0.4s ease, background 0.3s;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .login-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      max-width: 600px;
+      background: var(--bg-surface);
+      border-radius: 3.5rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(0);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-content h1 {
+      font-size: 4.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .login-content .gear-big {
+      width: 60px;
+      height: 60px;
+      fill: var(--engrenagem-color);
+      animation: spin 8s linear infinite;
+      transition: fill 0.2s;
+    }
+
+    .login-sub {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
+      opacity: 0.8;
+    }
+
+    .login-hint {
+      margin-top: 2.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      border-top: 1px solid var(--border-light);
+      padding-top: 1.8rem;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .login-hint span {
+      background: var(--bg-tab);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== CONTEÚDO DO SITE (100vw) ===== */
+    .site-content {
+      width: 100vw;
+      min-height: 100vh;
+      flex-shrink: 0;
       padding: 1.5rem 1rem;
+      background: var(--bg-body);
+      transition: background 0.3s ease;
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }
 
-    /* container principal */
     .app {
       max-width: 1200px;
       width: 100%;
@@ -77,7 +213,7 @@
       backdrop-filter: blur(2px);
     }
 
-    /* ===== HEADER ===== */
+    /* ===== HEADER (dentro do app) ===== */
     .header {
       display: flex;
       flex-wrap: wrap;
@@ -109,11 +245,6 @@
       transition: fill 0.2s ease;
     }
 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
     .site-title {
       font-size: 2rem;
       font-weight: 600;
@@ -122,7 +253,6 @@
       transition: color 0.2s ease;
     }
 
-    /* toggle switch */
     .toggle-wrapper {
       display: flex;
       align-items: center;
@@ -163,7 +293,7 @@
       transform: translateX(24px);
     }
 
-    /* ===== TABS ===== */
+    /* ===== TABS, CARDS etc (mesmo do original, com cores neutras) ===== */
     .tabs {
       display: flex;
       gap: 0.25rem;
@@ -173,7 +303,6 @@
       margin-bottom: 2.2rem;
       transition: background 0.2s ease;
     }
-
     .tab-btn {
       flex: 1;
       border: none;
@@ -187,43 +316,35 @@
       transition: all 0.2s ease;
       font-family: 'Inter', sans-serif;
     }
-
     .tab-btn.active {
       background: var(--bg-surface);
       color: var(--text-primary);
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-      transition: background 0.2s ease, color 0.2s;
     }
-
     .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
     }
     body.dark .tab-btn:hover {
       background: rgba(255, 255, 255, 0.06);
     }
-
     .tab-content {
       display: none;
       animation: fadeSlide 0.3s ease;
     }
-
     .tab-content.active {
       display: block;
     }
-
     @keyframes fadeSlide {
       0% { opacity: 0; transform: translateY(6px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== CARDS (cabos) ===== */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.8rem;
       margin-top: 0.5rem;
     }
-
     .card {
       background: var(--card-bg);
       border-radius: 1.8rem;
@@ -234,25 +355,20 @@
       cursor: pointer;
       border: 1px solid var(--border-light);
     }
-
     .card:hover {
       transform: scale(1.03);
       box-shadow: var(--shadow-hover);
     }
-
     .card h3 {
       font-weight: 600;
       font-size: 1.3rem;
       color: var(--text-primary);
       margin-bottom: 0.5rem;
     }
-
     .card .card-sub {
       font-size: 0.9rem;
       color: var(--text-secondary);
-      font-weight: 400;
     }
-
     .card-extra {
       margin-top: 1.2rem;
       background: var(--bg-surface);
@@ -264,22 +380,15 @@
       text-align: left;
       display: none;
       animation: fadeSlide 0.3s ease;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
-      transition: background 0.2s;
     }
+    .card-extra.show { display: block; }
 
-    .card-extra.show {
-      display: block;
-    }
-
-    /* ===== TOPOLOGIAS ===== */
     .topo-buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       margin: 1.5rem 0 1.8rem;
     }
-
     .topo-btn {
       background: var(--bg-tab);
       border: none;
@@ -294,24 +403,20 @@
       box-shadow: var(--shadow);
       border: 1px solid transparent;
     }
-
     .topo-btn.active {
       background: var(--accent);
-      color: #fcf9f5;
+      color: #faf5f0;
       border-color: var(--accent-hover);
-      box-shadow: 0 6px 14px rgba(184, 124, 90, 0.25);
+      box-shadow: 0 6px 14px rgba(120, 100, 80, 0.2);
     }
     body.dark .topo-btn.active {
-      background: var(--accent);
-      color: #1f1813;
+      color: #1f1a16;
     }
-
     .topo-btn:hover {
       transform: translateY(-2px);
       background: var(--accent-hover);
-      color: #fcf9f5;
+      color: #faf5f0;
     }
-
     .topo-detail {
       background: var(--bg-card);
       border-radius: 2rem;
@@ -320,19 +425,16 @@
       transition: background 0.2s;
       margin-top: 0.5rem;
     }
-
     .topo-detail h4 {
       font-size: 1.3rem;
       margin-bottom: 0.75rem;
       color: var(--text-primary);
     }
-
     .topo-detail p {
       color: var(--text-secondary);
       line-height: 1.6;
       margin-bottom: 1rem;
     }
-
     .vantagens {
       display: flex;
       flex-wrap: wrap;
@@ -346,20 +448,15 @@
     }
     .vantagens ul li {
       padding: 0.3rem 0 0.3rem 1.8rem;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23b87c5a" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%238f8074" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
       background-size: 1.2rem;
       color: var(--text-secondary);
     }
     .vantagens ul:last-child li {
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23b87c5a" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>') left center no-repeat;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%238f8074" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>') left center no-repeat;
       background-size: 1.2rem;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    /* ===== CALCULADORA ===== */
     .calculator {
       margin-top: 3.2rem;
       background: var(--bg-card);
@@ -368,37 +465,31 @@
       border: 1px solid var(--border-light);
       transition: background 0.2s;
     }
-
     .calculator h3 {
       font-size: 1.3rem;
       font-weight: 600;
       margin-bottom: 1.2rem;
       color: var(--text-primary);
     }
-
     .calc-group {
       display: flex;
       flex-wrap: wrap;
       gap: 1.8rem 2.5rem;
       margin-bottom: 1.8rem;
     }
-
     .calc-option {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
-
     .calc-option label {
       font-weight: 500;
       color: var(--text-secondary);
     }
-
     .calc-option div {
       display: flex;
       gap: 1.2rem;
     }
-
     .calc-option input[type="radio"] {
       accent-color: var(--accent);
       width: 18px;
@@ -406,28 +497,24 @@
       margin-right: 0.2rem;
       cursor: pointer;
     }
-
     .calc-btn {
       background: var(--accent);
       border: none;
-      color: #fcf9f5;
+      color: #faf5f0;
       font-weight: 600;
       padding: 0.8rem 2rem;
       border-radius: 60px;
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      box-shadow: 0 4px 10px rgba(184, 124, 90, 0.2);
+      box-shadow: 0 4px 10px rgba(120, 100, 80, 0.2);
       font-family: 'Inter', sans-serif;
     }
-    body.dark .calc-btn {
-      color: #1f1813;
-    }
+    body.dark .calc-btn { color: #1f1a16; }
     .calc-btn:hover {
       background: var(--accent-hover);
       transform: scale(1.01);
     }
-
     .result-box {
       margin-top: 1.5rem;
       padding: 1.2rem 1.8rem;
@@ -438,12 +525,10 @@
       transition: all 0.3s ease;
       display: none;
     }
-
     .result-box.show {
       display: block;
       animation: fadeSlide 0.3s ease;
     }
-
     .result-box strong {
       display: block;
       font-size: 1.2rem;
@@ -455,7 +540,6 @@
       margin-top: 0.3rem;
     }
 
-    /* ===== RESPONSIVO ===== */
     @media (max-width: 700px) {
       .app { padding: 1.5rem 1rem; }
       .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -466,108 +550,228 @@
       .topo-btn { width: 100%; text-align: center; }
       .calc-group { flex-direction: column; gap: 1rem; }
       .vantagens { flex-direction: column; }
+      .login-content h1 { font-size: 3.2rem; }
     }
 
     @media (max-width: 480px) {
       .site-title { font-size: 1.6rem; }
       .gear { width: 34px; height: 34px; }
       .calc-option div { flex-wrap: wrap; }
+      .login-content { padding: 1.5rem; }
     }
 
-    /* extras */
-    .mt-1 { margin-top: 0.5rem; }
+    /* ARRASTE (touch) - somente na tela de login */
+    .login-screen {
+      touch-action: pan-x;
+      cursor: grab;
+    }
+
+    .login-screen:active {
+      cursor: grabbing;
+    }
+
+    /* transição suave de blur e brilho no login */
+    .login-screen.active {
+      backdrop-filter: blur(2px) brightness(1.02);
+    }
+
+    /* scrollbar personalizada (opcional) */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-tab); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
   </style>
 </head>
 <body>
-  <div class="app" id="app">
-    <!-- cabeçalho -->
-    <header class="header">
-      <div class="logo-area">
-        <div class="logo-icon">
-          <svg class="gear" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <div class="app-wrapper" id="appWrapper">
+    <!-- TELA DE LOGIN -->
+    <div class="login-screen" id="loginScreen">
+      <div class="login-content">
+        <h1>
+          <svg class="gear-big" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4ZM12 2C14.2 2 16 3.8 16 6C16 8.2 14.2 10 12 10C9.8 10 8 8.2 8 6C8 3.8 9.8 2 12 2ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16ZM12 14C14.2 14 16 15.8 16 18C16 20.2 14.2 22 12 22C9.8 22 8 20.2 8 18C8 15.8 9.8 14 12 14ZM12 9C10.9 9 10 9.9 10 11C10 12.1 10.9 13 12 13C13.1 13 14 12.1 14 11C14 9.9 13.1 9 12 9ZM12 7C14.2 7 16 8.8 16 11C16 13.2 14.2 15 12 15C9.8 15 8 13.2 8 11C8 8.8 9.8 7 12 7Z"/>
           </svg>
-        </div>
-        <span class="site-title">Automação</span>
-      </div>
-      <div class="toggle-wrapper">
-        <span class="toggle-label">Claro</span>
-        <div class="toggle-switch" id="toggleSwitch" role="button" tabindex="0" aria-label="Alternar modo claro/escuro">
-          <div class="dot"></div>
-        </div>
-        <span class="toggle-label">Escuro</span>
-      </div>
-    </header>
-
-    <!-- TABS -->
-    <div class="tabs" role="tablist">
-      <button class="tab-btn active" data-tab="cabos" role="tab">Cabos Industriais</button>
-      <button class="tab-btn" data-tab="topologias" role="tab">Topologias</button>
-    </div>
-
-    <!-- ABAS CONTEÚDO -->
-    <!-- CABOS -->
-    <div class="tab-content active" id="tab-cabos" role="tabpanel">
-      <div class="cards-grid">
-        <div class="card" data-card="trancado">
-          <h3>Par Trançado</h3>
-          <div class="card-sub">Clique para detalhe</div>
-          <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos.</div>
-        </div>
-        <div class="card" data-card="fibra">
-          <h3>Fibra Óptica</h3>
-          <div class="card-sub">Clique para detalhe</div>
-          <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial.</div>
-        </div>
-        <div class="card" data-card="wireless">
-          <h3>Wireless</h3>
-          <div class="card-sub">Clique para detalhe</div>
-          <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso, com bom sinal e segurança.</div>
+          Automação
+        </h1>
+        <div class="login-sub">chão de fábrica · controle inteligente</div>
+        <div class="login-hint">
+          <span>⟵ arraste para acessar</span>
         </div>
       </div>
     </div>
 
-    <!-- TOPOLOGIAS -->
-    <div class="tab-content" id="tab-topologias" role="tabpanel">
-      <div class="topo-buttons">
-        <button class="topo-btn active" data-topo="estrela">⭐ Layout em Estrela</button>
-        <button class="topo-btn" data-topo="barramento">➖ Layout em Barramento</button>
-      </div>
-      <div class="topo-detail" id="topoDetail">
-        <!-- preenchido via js -->
-      </div>
-    </div>
+    <!-- CONTEÚDO DO SITE -->
+    <div class="site-content">
+      <div class="app" id="app">
+        <!-- cabeçalho -->
+        <header class="header">
+          <div class="logo-area">
+            <div class="logo-icon">
+              <svg class="gear" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4ZM12 2C14.2 2 16 3.8 16 6C16 8.2 14.2 10 12 10C9.8 10 8 8.2 8 6C8 3.8 9.8 2 12 2ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16ZM12 14C14.2 14 16 15.8 16 18C16 20.2 14.2 22 12 22C9.8 22 8 20.2 8 18C8 15.8 9.8 14 12 14ZM12 9C10.9 9 10 9.9 10 11C10 12.1 10.9 13 12 13C13.1 13 14 12.1 14 11C14 9.9 13.1 9 12 9ZM12 7C14.2 7 16 8.8 16 11C16 13.2 14.2 15 12 15C9.8 15 8 13.2 8 11C8 8.8 9.8 7 12 7Z"/>
+              </svg>
+            </div>
+            <span class="site-title">Automação</span>
+          </div>
+          <div class="toggle-wrapper">
+            <span class="toggle-label">Claro</span>
+            <div class="toggle-switch" id="toggleSwitch" role="button" tabindex="0" aria-label="Alternar modo">
+              <div class="dot"></div>
+            </div>
+            <span class="toggle-label">Escuro</span>
+          </div>
+        </header>
 
-    <!-- CALCULADORA / ASSISTENTE -->
-    <div class="calculator">
-      <h3>🧩 Assistente de Recomendação</h3>
-      <div class="calc-group">
-        <div class="calc-option">
-          <label>Minha fábrica tem muito ruído elétrico?</label>
-          <div>
-            <label><input type="radio" name="ruido" value="sim"> Sim</label>
-            <label><input type="radio" name="ruido" value="nao" checked> Não</label>
+        <!-- TABS e conteúdo (mesmo do original) -->
+        <div class="tabs" role="tablist">
+          <button class="tab-btn active" data-tab="cabos" role="tab">Cabos Industriais</button>
+          <button class="tab-btn" data-tab="topologias" role="tab">Topologias</button>
+        </div>
+
+        <div class="tab-content active" id="tab-cabos" role="tabpanel">
+          <div class="cards-grid">
+            <div class="card" data-card="trancado">
+              <h3>Par Trançado</h3>
+              <div class="card-sub">Clique para detalhe</div>
+              <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos.</div>
+            </div>
+            <div class="card" data-card="fibra">
+              <h3>Fibra Óptica</h3>
+              <div class="card-sub">Clique para detalhe</div>
+              <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial.</div>
+            </div>
+            <div class="card" data-card="wireless">
+              <h3>Wireless</h3>
+              <div class="card-sub">Clique para detalhe</div>
+              <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso, com bom sinal e segurança.</div>
+            </div>
           </div>
         </div>
-        <div class="calc-option">
-          <label>A distância entre os pontos é longa?</label>
-          <div>
-            <label><input type="radio" name="distancia" value="sim"> Sim</label>
-            <label><input type="radio" name="distancia" value="nao" checked> Não</label>
+
+        <div class="tab-content" id="tab-topologias" role="tabpanel">
+          <div class="topo-buttons">
+            <button class="topo-btn active" data-topo="estrela">⭐ Layout em Estrela</button>
+            <button class="topo-btn" data-topo="barramento">➖ Layout em Barramento</button>
+          </div>
+          <div class="topo-detail" id="topoDetail"></div>
+        </div>
+
+        <div class="calculator">
+          <h3>🧩 Assistente de Recomendação</h3>
+          <div class="calc-group">
+            <div class="calc-option">
+              <label>Minha fábrica tem muito ruído elétrico?</label>
+              <div>
+                <label><input type="radio" name="ruido" value="sim"> Sim</label>
+                <label><input type="radio" name="ruido" value="nao" checked> Não</label>
+              </div>
+            </div>
+            <div class="calc-option">
+              <label>A distância entre os pontos é longa?</label>
+              <div>
+                <label><input type="radio" name="distancia" value="sim"> Sim</label>
+                <label><input type="radio" name="distancia" value="nao" checked> Não</label>
+              </div>
+            </div>
+          </div>
+          <button class="calc-btn" id="calcBtn">Calcular Recomendação</button>
+          <div class="result-box" id="resultBox">
+            <strong id="resultTitle"></strong>
+            <span id="resultDesc"></span>
           </div>
         </div>
-      </div>
-      <button class="calc-btn" id="calcBtn">Calcular Recomendação</button>
-      <div class="result-box" id="resultBox">
-        <strong id="resultTitle"></strong>
-        <span id="resultDesc"></span>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // ----- DARK MODE TOGGLE -----
+      // ===== ARRASTE (login → site) =====
+      const wrapper = document.getElementById('appWrapper');
+      const loginScreen = document.getElementById('loginScreen');
+      let startX = 0;
+      let isDragging = false;
+      let currentTranslate = 0;
+      let isLocked = false; // impede voltar
+
+      function handleStart(clientX) {
+        if (isLocked) return;
+        startX = clientX;
+        isDragging = true;
+        wrapper.style.transition = 'none';
+        loginScreen.style.cursor = 'grabbing';
+      }
+
+      function handleMove(clientX) {
+        if (!isDragging || isLocked) return;
+        const delta = clientX - startX;
+        // arraste para a esquerda (negativo) libera o conteúdo
+        if (delta < 0) {
+          const translate = Math.max(-100, (delta / window.innerWidth) * 100);
+          wrapper.style.transform = `translateX(${translate}vw)`;
+          // blur dinâmico / brilho
+          const progress = Math.min(1, Math.abs(translate) / 60);
+          loginScreen.style.backdropFilter = `blur(${6 - progress * 4}px) brightness(${0.98 + progress * 0.06})`;
+        }
+      }
+
+      function handleEnd(clientX) {
+        if (!isDragging || isLocked) {
+          isDragging = false;
+          loginScreen.style.cursor = 'grab';
+          return;
+        }
+        isDragging = false;
+        const delta = clientX - startX;
+        const threshold = -30; // sensibilidade
+        if (delta < threshold) {
+          // trava na posição final (100vw)
+          wrapper.style.transition = 'transform 0.55s cubic-bezier(0.23, 1, 0.32, 1)';
+          wrapper.style.transform = 'translateX(-100vw)';
+          isLocked = true;
+          loginScreen.style.backdropFilter = 'blur(2px) brightness(1.02)';
+          loginScreen.style.cursor = 'default';
+        } else {
+          // volta
+          wrapper.style.transition = 'transform 0.45s cubic-bezier(0.23, 1, 0.32, 1)';
+          wrapper.style.transform = 'translateX(0)';
+          loginScreen.style.backdropFilter = 'blur(6px) brightness(0.98)';
+        }
+        loginScreen.style.cursor = 'grab';
+      }
+
+      // Eventos touch
+      loginScreen.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        handleStart(touch.clientX);
+      }, { passive: true });
+
+      loginScreen.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        handleMove(touch.clientX);
+      }, { passive: true });
+
+      loginScreen.addEventListener('touchend', (e) => {
+        const touch = e.changedTouches[0];
+        handleEnd(touch.clientX);
+      }, { passive: true });
+
+      // Eventos mouse (desktop)
+      loginScreen.addEventListener('mousedown', (e) => {
+        handleStart(e.clientX);
+        e.preventDefault();
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        handleMove(e.clientX);
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (isDragging) {
+          handleEnd(e.clientX);
+        }
+      });
+
+      // ===== DARK MODE TOGGLE =====
       const toggle = document.getElementById('toggleSwitch');
       const body = document.body;
 
@@ -585,7 +789,6 @@
         setTheme(isDark ? 'light' : 'dark');
       });
 
-      // carregar tema salvo
       const saved = localStorage.getItem('aut-theme');
       if (saved) {
         setTheme(saved);
@@ -593,7 +796,7 @@
         setTheme('dark');
       }
 
-      // ----- TABS -----
+      // ===== TABS =====
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = {
         cabos: document.getElementById('tab-cabos'),
@@ -611,104 +814,20 @@
         });
       });
 
-      // ----- CARDS CABOS (toggle extra) -----
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
+      // ===== CARDS =====
+      document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function(e) {
-          // não dispara se clicar no extra (para evitar toggle duplo)
           if (e.target.closest('.card-extra')) return;
           const extra = this.querySelector('.card-extra');
-          if (extra) {
-            extra.classList.toggle('show');
-          }
+          if (extra) extra.classList.toggle('show');
         });
       });
 
-      // ----- TOPOLOGIAS (estrela / barramento) -----
+      // ===== TOPOLOGIAS =====
       const topoBtns = document.querySelectorAll('.topo-btn');
       const topoDetail = document.getElementById('topoDetail');
 
       const topoData = {
         estrela: {
           titulo: '⭐ Layout em Estrela',
-          descricao: 'Cada dispositivo se conecta a um switch ou hub central. No chão de fábrica, é comum em células de produção e ilhas de automação, oferecendo alta flexibilidade.',
-          vantagens: ['Isolamento de falhas', 'Fácil manutenção', 'Expansão simples'],
-          desvantagens: ['Dependência do switch central', 'Mais cabos necessários']
-        },
-        barramento: {
-          titulo: '➖ Layout em Barramento',
-          descricao: 'Todos os dispositivos compartilham um único cabo backbone. Usado em redes RS-485, Modbus e em sistemas mais antigos ou com poucos nós.',
-          vantagens: ['Menos cabos', 'Custo reduzido', 'Simples para pequenas redes'],
-          desvantagens: ['Falha no cabo afeta toda a rede', 'Limite de dispositivos', 'Dificuldade em isolar problemas']
-        }
-      };
-
-      function renderTopo(topoKey) {
-        const data = topoData[topoKey];
-        if (!data) return;
-        topoDetail.innerHTML = `
-          <h4>${data.titulo}</h4>
-          <p>${data.descricao}</p>
-          <div class="vantagens">
-            <ul><strong>✅ Vantagens</strong>${data.vantagens.map(v => `<li>${v}</li>`).join('')}</ul>
-            <ul><strong>⚠️ Desvantagens</strong>${data.desvantagens.map(d => `<li>${d}</li>`).join('')}</ul>
-          </div>
-        `;
-      }
-
-      topoBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          topoBtns.forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          const topo = this.dataset.topo;
-          renderTopo(topo);
-        });
-      });
-
-      // inicializar topo com estrela
-      renderTopo('estrela');
-
-      // ----- CALCULADORA / ASSISTENTE -----
-      const calcBtn = document.getElementById('calcBtn');
-      const resultBox = document.getElementById('resultBox');
-      const resultTitle = document.getElementById('resultTitle');
-      const resultDesc = document.getElementById('resultDesc');
-
-      function getSelectedValue(name) {
-        const radios = document.querySelectorAll(`input[name="${name}"]`);
-        for (let r of radios) {
-          if (r.checked) return r.value;
-        }
-        return 'nao';
-      }
-
-      calcBtn.addEventListener('click', function() {
-        const ruido = getSelectedValue('ruido');
-        const distancia = getSelectedValue('distancia');
-
-        let recomendacao = '';
-        let explicacao = '';
-
-        if (ruido === 'sim' && distancia === 'sim') {
-          recomendacao = 'Fibra Óptica';
-          explicacao = 'Imune a ruídos eletromagnéticos e ideal para longas distâncias.';
-        } else if (ruido === 'sim' && distancia === 'nao') {
-          recomendacao = 'Par Trançado Blindado (STP)';
-          explicacao = 'Protege contra o ruído em curtas/médias distâncias.';
-        } else if (ruido === 'nao' && distancia === 'sim') {
-          recomendacao = 'Fibra Óptica ou Wireless de Longo Alcance';
-          explicacao = 'Foco na cobertura da distância.';
-        } else { // ruido = não e distancia = não
-          recomendacao = 'Par Trançado Comum (UTP) ou Wireless';
-          explicacao = 'Solução de menor custo e fácil instalação.';
-        }
-
-        resultTitle.innerText = `✅ ${recomendacao}`;
-        resultDesc.innerText = explicacao;
-        resultBox.classList.add('show');
-      });
-
-    })();
-  </script>
-</body>
-</html>
+          descricao: 'Cada dispositivo se conecta a um switch ou hub central
