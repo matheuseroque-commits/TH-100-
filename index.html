@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
   <style>
-    /* ========== RESET & BASE ========== */
+    /* ========== VARIÁVEIS ========== */
     * {
       margin: 0;
       padding: 0;
@@ -16,48 +16,47 @@
     }
 
     :root {
-      --bg-body: #e8e0d8;
-      --bg-surface: #f2ede8;
-      --bg-card: #f6f1ec;
-      --bg-tab: #dcd3ca;
-      --text-primary: #2f2a26;
-      --text-secondary: #544d47;
-      --border-light: #cbc0b6;
-      --shadow: 0 8px 20px rgba(60, 50, 40, 0.08);
-      --shadow-hover: 0 16px 32px rgba(50, 40, 30, 0.16);
-      --accent: #8f8074;
-      --accent-hover: #7a6b5f;
-      --card-bg: #f4eee8;
-      --toggle-bg: #ccc0b6;
-      --toggle-dot: #faf5f0;
-      --engrenagem-color: #3d342e;
-      --glossario-bg: #faf5f0;
+      /* Tons neutros - claro */
+      --bg-body: #e8e4df;
+      --bg-surface: #f5f2ef;
+      --bg-card: #faf8f6;
+      --bg-tab: #e0dbd6;
+      --text-primary: #2c2824;
+      --text-secondary: #5a554f;
+      --border-light: #d0cac4;
+      --shadow: 0 8px 20px rgba(60, 55, 50, 0.08);
+      --shadow-hover: 0 16px 32px rgba(50, 45, 40, 0.15);
+      --accent: #8a837c;
+      --accent-hover: #756e67;
+      --card-bg: #f5f2ef;
+      --toggle-bg: #d0cac4;
+      --toggle-dot: #f5f2ef;
+      --engrenagem-color: #3d3833;
     }
 
     body.dark {
-      --bg-body: #2b2520;
-      --bg-surface: #3d3530;
-      --bg-card: #4d443d;
-      --bg-tab: #544b44;
-      --text-primary: #eee7e0;
-      --text-secondary: #d5ccc4;
-      --border-light: #6b6058;
+      --bg-body: #2a2724;
+      --bg-surface: #3d3935;
+      --bg-card: #4d4843;
+      --bg-tab: #5a5550;
+      --text-primary: #eeebe7;
+      --text-secondary: #d5d0ca;
+      --border-light: #6b655f;
       --shadow: 0 8px 20px rgba(0,0,0,0.5);
       --shadow-hover: 0 16px 32px rgba(0,0,0,0.7);
-      --accent: #a39588;
-      --accent-hover: #b8aa9c;
-      --card-bg: #4d443d;
-      --toggle-bg: #5f544b;
-      --toggle-dot: #e3dad2;
-      --engrenagem-color: #e8dfd6;
-      --glossario-bg: #4d443d;
+      --accent: #a39b94;
+      --accent-hover: #b5aea7;
+      --card-bg: #4d4843;
+      --toggle-bg: #5f5953;
+      --toggle-dot: #e3ddd7;
+      --engrenagem-color: #e8e3dd;
     }
 
     body {
       background-color: var(--bg-body);
       color: var(--text-primary);
       font-family: 'Inter', sans-serif;
-      transition: background 0.3s ease, color 0.2s ease;
+      transition: background 0.25s ease, color 0.2s ease;
       min-height: 100vh;
       padding: 1.5rem 1rem;
       display: flex;
@@ -169,7 +168,6 @@
       border-radius: 60px;
       margin-bottom: 2.2rem;
       transition: background 0.2s ease;
-      flex-wrap: wrap;
     }
 
     .tab-btn {
@@ -184,7 +182,6 @@
       cursor: pointer;
       transition: all 0.2s ease;
       font-family: 'Inter', sans-serif;
-      min-width: 100px;
     }
 
     .tab-btn.active {
@@ -194,7 +191,7 @@
     }
 
     .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.3);
     }
     body.dark .tab-btn:hover {
       background: rgba(255, 255, 255, 0.06);
@@ -248,6 +245,7 @@
     .card .card-sub {
       font-size: 0.9rem;
       color: var(--text-secondary);
+      font-weight: 400;
     }
 
     .card-extra {
@@ -261,6 +259,7 @@
       text-align: left;
       display: none;
       animation: fadeSlide 0.3s ease;
+      transition: background 0.2s;
     }
 
     .card-extra.show {
@@ -271,17 +270,17 @@
     .topo-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.8rem;
+      gap: 1rem;
       margin: 1.5rem 0 1.8rem;
     }
 
     .topo-btn {
       background: var(--bg-tab);
       border: none;
-      padding: 0.7rem 1.8rem;
+      padding: 0.8rem 2.2rem;
       border-radius: 60px;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--text-primary);
       cursor: pointer;
       transition: all 0.15s ease;
@@ -292,18 +291,19 @@
 
     .topo-btn.active {
       background: var(--accent);
-      color: #faf5f0;
+      color: #f5f2ef;
       border-color: var(--accent-hover);
-      box-shadow: 0 6px 14px rgba(120, 100, 80, 0.2);
+      box-shadow: 0 6px 14px rgba(138, 131, 124, 0.25);
     }
     body.dark .topo-btn.active {
-      color: #1f1a16;
+      background: var(--accent);
+      color: #1f1c19;
     }
 
     .topo-btn:hover {
       transform: translateY(-2px);
       background: var(--accent-hover);
-      color: #faf5f0;
+      color: #f5f2ef;
     }
 
     .topo-detail {
@@ -340,97 +340,13 @@
     }
     .vantagens ul li {
       padding: 0.3rem 0 0.3rem 1.8rem;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%238f8074" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%238a837c" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
       background-size: 1.2rem;
       color: var(--text-secondary);
     }
     .vantagens ul:last-child li {
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%238f8074" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>') left center no-repeat;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%238a837c" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>') left center no-repeat;
       background-size: 1.2rem;
-    }
-
-    /* ===== GLOSSÁRIO ===== */
-    .glossario-search {
-      margin-bottom: 1.8rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .glossario-search input {
-      flex: 1;
-      padding: 0.8rem 1.2rem;
-      border-radius: 60px;
-      border: 1px solid var(--border-light);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      transition: all 0.2s;
-      min-width: 200px;
-    }
-
-    .glossario-search input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(143, 128, 116, 0.2);
-    }
-
-    .glossario-search input::placeholder {
-      color: var(--text-secondary);
-      opacity: 0.6;
-    }
-
-    .glossario-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .glossario-item {
-      background: var(--bg-card);
-      border-radius: 1.2rem;
-      padding: 1.2rem 1.5rem;
-      border: 1px solid var(--border-light);
-      transition: all 0.2s;
-      cursor: default;
-    }
-
-    .glossario-item:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .glossario-item .termo {
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--accent);
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    .glossario-item .definicao {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    .glossario-item .categoria {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.2rem 0.8rem;
-      background: var(--bg-tab);
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
-
-    .glossario-empty {
-      text-align: center;
-      padding: 3rem;
-      color: var(--text-secondary);
-      font-size: 1.1rem;
     }
 
     /* ===== CALCULADORA ===== */
@@ -484,17 +400,19 @@
     .calc-btn {
       background: var(--accent);
       border: none;
-      color: #faf5f0;
+      color: #f5f2ef;
       font-weight: 600;
       padding: 0.8rem 2rem;
       border-radius: 60px;
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      box-shadow: 0 4px 10px rgba(120, 100, 80, 0.2);
+      box-shadow: 0 4px 10px rgba(138, 131, 124, 0.2);
       font-family: 'Inter', sans-serif;
     }
-    body.dark .calc-btn { color: #1f1a16; }
+    body.dark .calc-btn {
+      color: #1f1c19;
+    }
     .calc-btn:hover {
       background: var(--accent-hover);
       transform: scale(1.01);
@@ -510,10 +428,12 @@
       transition: all 0.3s ease;
       display: none;
     }
+
     .result-box.show {
       display: block;
       animation: fadeSlide 0.3s ease;
     }
+
     .result-box strong {
       display: block;
       font-size: 1.2rem;
@@ -536,8 +456,6 @@
       .topo-btn { width: 100%; text-align: center; }
       .calc-group { flex-direction: column; gap: 1rem; }
       .vantagens { flex-direction: column; }
-      .glossario-grid { grid-template-columns: 1fr; }
-      .glossario-search { flex-direction: column; }
     }
 
     @media (max-width: 480px) {
@@ -549,7 +467,7 @@
 </head>
 <body>
   <div class="app" id="app">
-    <!-- HEADER -->
+    <!-- cabeçalho -->
     <header class="header">
       <div class="logo-area">
         <div class="logo-icon">
@@ -572,7 +490,6 @@
     <div class="tabs" role="tablist">
       <button class="tab-btn active" data-tab="cabos" role="tab">Cabos Industriais</button>
       <button class="tab-btn" data-tab="topologias" role="tab">Topologias</button>
-      <button class="tab-btn" data-tab="glossario" role="tab">📚 Glossário</button>
     </div>
 
     <!-- CABOS -->
@@ -581,17 +498,17 @@
         <div class="card" data-card="trancado">
           <h3>Par Trançado</h3>
           <div class="card-sub">Clique para detalhe</div>
-          <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos. Custo-benefício excelente para curtas distâncias.</div>
+          <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos.</div>
         </div>
         <div class="card" data-card="fibra">
           <h3>Fibra Óptica</h3>
           <div class="card-sub">Clique para detalhe</div>
-          <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial com alta velocidade e segurança.</div>
+          <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial.</div>
         </div>
         <div class="card" data-card="wireless">
-          <h3>Wireless Industrial</h3>
+          <h3>Wireless</h3>
           <div class="card-sub">Clique para detalhe</div>
-          <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso. Protocolos como WiFi 6, 5G e LoRa garantem confiabilidade.</div>
+          <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso, com bom sinal e segurança.</div>
         </div>
       </div>
     </div>
@@ -599,23 +516,10 @@
     <!-- TOPOLOGIAS -->
     <div class="tab-content" id="tab-topologias" role="tabpanel">
       <div class="topo-buttons">
-        <button class="topo-btn active" data-topo="estrela">⭐ Estrela</button>
-        <button class="topo-btn" data-topo="barramento">➖ Barramento</button>
-        <button class="topo-btn" data-topo="anel">🔄 Anel</button>
-        <button class="topo-btn" data-topo="malha">🔀 Malha</button>
+        <button class="topo-btn active" data-topo="estrela">⭐ Layout em Estrela</button>
+        <button class="topo-btn" data-topo="barramento">➖ Layout em Barramento</button>
       </div>
       <div class="topo-detail" id="topoDetail"></div>
-    </div>
-
-    <!-- GLOSSÁRIO -->
-    <div class="tab-content" id="tab-glossario" role="tabpanel">
-      <div class="glossario-search">
-        <input type="text" id="glossarioBusca" placeholder="🔍 Buscar termo..." aria-label="Buscar no glossário">
-        <span style="color: var(--text-secondary); font-size: 0.9rem; display: flex; align-items: center;" id="glossarioCount">Mostrando todos os termos</span>
-      </div>
-      <div class="glossario-grid" id="glossarioGrid">
-        <!-- Os termos serão inseridos via JavaScript -->
-      </div>
     </div>
 
     <!-- CALCULADORA -->
@@ -660,7 +564,7 @@
         localStorage.setItem('aut-theme', theme);
       }
 
-      toggle.addEventListener('click', function(e) {
+      toggle.addEventListener('click', function() {
         const isDark = body.classList.contains('dark');
         setTheme(isDark ? 'light' : 'dark');
       });
@@ -676,8 +580,7 @@
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = {
         cabos: document.getElementById('tab-cabos'),
-        topologias: document.getElementById('tab-topologias'),
-        glossario: document.getElementById('tab-glossario')
+        topologias: document.getElementById('tab-topologias')
       };
 
       tabBtns.forEach(btn => {
@@ -696,7 +599,9 @@
         card.addEventListener('click', function(e) {
           if (e.target.closest('.card-extra')) return;
           const extra = this.querySelector('.card-extra');
-          if (extra) extra.classList.toggle('show');
+          if (extra) {
+            extra.classList.toggle('show');
+          }
         });
       });
 
@@ -707,7 +612,7 @@
       const topoData = {
         estrela: {
           titulo: '⭐ Layout em Estrela',
-          descricao: 'Cada dispositivo se conecta a um switch ou hub central. No chão de fábrica, é comum em células de produção e ilhas de automação, oferecendo alta flexibilidade e fácil diagnóstico.',
+          descricao: 'Cada dispositivo se conecta a um switch ou hub central. No chão de fábrica, é comum em células de produção e ilhas de automação, oferecendo alta flexibilidade.',
           vantagens: ['Isolamento de falhas', 'Fácil manutenção', 'Expansão simples'],
           desvantagens: ['Dependência do switch central', 'Mais cabos necessários']
         },
@@ -716,18 +621,6 @@
           descricao: 'Todos os dispositivos compartilham um único cabo backbone. Usado em redes RS-485, Modbus e em sistemas mais antigos ou com poucos nós.',
           vantagens: ['Menos cabos', 'Custo reduzido', 'Simples para pequenas redes'],
           desvantagens: ['Falha no cabo afeta toda a rede', 'Limite de dispositivos', 'Dificuldade em isolar problemas']
-        },
-        anel: {
-          titulo: '🔄 Layout em Anel',
-          descricao: 'Os dispositivos se conectam em um circuito fechado. Se um cabo falha, o tráfego é redirecionado pelo caminho inverso (rede em anel com redundância).',
-          vantagens: ['Redundância nativa', 'Distribuição de carga', 'Alta confiabilidade'],
-          desvantagens: ['Complexidade de configuração', 'Custo maior de implementação']
-        },
-        malha: {
-          titulo: '🔀 Layout em Malha',
-          descricao: 'Todos os dispositivos se conectam entre si, formando múltiplos caminhos. É a topologia mais redundante e confiável para aplicações críticas.',
-          vantagens: ['Alta redundância', 'Tolerância a falhas', 'Excelente desempenho'],
-          desvantagens: ['Alto custo de cabos', 'Complexidade de gerenciamento']
         }
       };
 
@@ -795,17 +688,7 @@
         resultBox.classList.add('show');
       });
 
-      // ===== GLOSSÁRIO =====
-      const termos = [
-        { termo: 'CLP', definicao: 'Controlador Lógico Programável. Computador industrial usado para automatizar processos, como esteiras, robôs e máquinas. É o "cérebro" da automação industrial.', categoria: 'Equipamentos' },
-        { termo: 'IHM', definicao: 'Interface Homem-Máquina. Tela onde operadores interagem com máquinas e sistemas, permitindo monitoramento e controle de processos.', categoria: 'Equipamentos' },
-        { termo: 'SCADA', definicao: 'Sistema de Supervisão e Aquisição de Dados. Software que monitora e controla processos industriais à distância, coletando dados em tempo real.', categoria: 'Sistemas' },
-        { termo: 'Modbus', definicao: 'Protocolo de comunicação serial amplamente usado em automação industrial para conectar dispositivos como CLPs, sensores e atuadores.', categoria: 'Protocolos' },
-        { termo: 'Profinet', definicao: 'Protocolo de comunicação industrial baseado em Ethernet, padrão da Siemens. Oferece alta velocidade e integração com sistemas de automação.', categoria: 'Protocolos' },
-        { termo: 'EtherNet/IP', definicao: 'Protocolo de comunicação industrial que usa Ethernet, comum na Rockwell Automation. Permite integração com sistemas de TI.', categoria: 'Protocolos' },
-        { termo: 'Sensor', definicao: 'Dispositivo que detecta mudanças no ambiente (temperatura, pressão, movimento, etc.) e converte em sinais elétricos para o CLP.', categoria: 'Componentes' },
-        { termo: 'Atuador', definicao: 'Dispositivo que executa uma ação física (abrir válvula, ligar motor, mover braço) baseado em um sinal de controle do CLP.', categoria: 'Componentes' },
-        { termo: 'I/O', definicao: 'Entrada/Saída (Input/Output). Pontos onde o CLP recebe sinais de sensores (entrada) e envia comandos para atuadores (saída).', categoria: 'Conceitos' },
-        { termo: 'Redundância', definicao: 'Ter componentes extras (backup) para garantir que o sistema continue funcionando se um falhar. Essencial para sistemas críticos.', categoria: 'Conceitos' },
-        { termo: 'Latência', definicao: 'Tempo de atraso entre o envio e o recebimento de um dado em uma rede. Baixa latência é crucial para controle em tempo real.', categoria: 'Conceitos' },
-        { termo: 'Backbone', definicao: 'C
+    })();
+  </script>
+</body>
+</html>
