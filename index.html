@@ -1,30 +1,20 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automação · Chão de fábrica</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
   <style>
-    /* RESET + BASE */
+    /* ========== RESET & BASE ========== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    html, body {
-      width: 100%;
-      min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      background: #e8e0d8;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-
-    /* ========== VARIÁVEIS ========== */
     :root {
       --bg-body: #e8e0d8;
       --bg-surface: #f2ede8;
@@ -41,9 +31,7 @@
       --toggle-bg: #ccc0b6;
       --toggle-dot: #faf5f0;
       --engrenagem-color: #3d342e;
-      --login-overlay: rgba(30, 25, 20, 0.55);
-      --btn-login-bg: #8f8074;
-      --btn-login-hover: #7a6b5f;
+      --glossario-bg: #faf5f0;
     }
 
     body.dark {
@@ -62,174 +50,16 @@
       --toggle-bg: #5f544b;
       --toggle-dot: #e3dad2;
       --engrenagem-color: #e8dfd6;
-      --login-overlay: rgba(10, 8, 6, 0.7);
-      --btn-login-bg: #a39588;
-      --btn-login-hover: #b8aa9c;
+      --glossario-bg: #4d443d;
     }
 
     body {
-      background: var(--bg-body);
+      background-color: var(--bg-body);
       color: var(--text-primary);
-      transition: background 0.3s ease, color 0.2s ease;
-    }
-
-    /* ===== WRAPPER PRINCIPAL ===== */
-    .app-wrapper {
-      display: flex;
-      flex-wrap: nowrap;
-      width: 200vw;
-      min-height: 100vh;
-      transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
-      will-change: transform;
-    }
-
-    .app-wrapper.shifted {
-      transform: translateX(-100vw);
-    }
-
-    /* ===== TELA DE LOGIN (100vw) ===== */
-    .login-screen {
-      width: 100vw;
-      min-height: 100vh;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-body);
-      position: relative;
-      transition: background 0.3s ease;
-      overflow: hidden;
-    }
-
-    .login-screen::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 30% 40%, rgba(160, 140, 120, 0.2), transparent 60%),
-                  radial-gradient(circle at 70% 80%, rgba(120, 100, 80, 0.15), transparent 50%);
-      background-size: 100% 100%;
-      transition: transform 0.2s ease-out;
-      will-change: transform;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .login-screen::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--login-overlay);
-      backdrop-filter: blur(6px) brightness(0.98);
-      -webkit-backdrop-filter: blur(6px) brightness(0.98);
-      transition: backdrop-filter 0.6s ease, background 0.3s;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .login-screen.exit .login-content {
-      transform: scale(0.95) translateY(20px);
-      opacity: 0;
-    }
-
-    .login-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 3rem 3.5rem;
-      max-width: 600px;
-      background: var(--bg-surface);
-      border-radius: 3.5rem;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-      backdrop-filter: blur(2px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
-    }
-
-    .login-content h1 {
-      font-size: 4.5rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .login-content .gear-big {
-      width: 60px;
-      height: 60px;
-      fill: var(--engrenagem-color);
-      animation: spin 8s linear infinite;
-      transition: fill 0.2s;
-    }
-
-    .login-sub {
-      margin-top: 0.75rem;
-      font-size: 1rem;
-      color: var(--text-secondary);
-      letter-spacing: 0.3px;
-      opacity: 0.8;
-    }
-
-    .login-btn {
-      margin-top: 2.8rem;
-      padding: 1rem 3.5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
       font-family: 'Inter', sans-serif;
-      background: var(--btn-login-bg);
-      color: #faf5f0;
-      border: none;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(120, 100, 80, 0.3);
-      letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .login-btn::after {
-      content: '→';
-      display: inline-block;
-      margin-left: 10px;
-      transition: transform 0.3s ease;
-    }
-
-    .login-btn:hover {
-      background: var(--btn-login-hover);
-      transform: scale(1.03);
-      box-shadow: 0 8px 25px rgba(120, 100, 80, 0.4);
-    }
-
-    .login-btn:hover::after {
-      transform: translateX(6px);
-    }
-
-    .login-btn:active {
-      transform: scale(0.97);
-    }
-
-    body.dark .login-btn {
-      color: #1f1a16;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* ===== CONTEÚDO DO SITE (100vw) ===== */
-    .site-content {
-      width: 100vw;
+      transition: background 0.3s ease, color 0.2s ease;
       min-height: 100vh;
-      flex-shrink: 0;
       padding: 1.5rem 1rem;
-      background: var(--bg-body);
-      transition: background 0.3s ease;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -243,7 +73,6 @@
       padding: 2rem 2rem 2.5rem;
       box-shadow: var(--shadow);
       transition: background 0.2s ease, box-shadow 0.2s ease;
-      backdrop-filter: blur(2px);
     }
 
     /* ===== HEADER ===== */
@@ -276,6 +105,11 @@
       fill: var(--engrenagem-color);
       animation: spin 6s linear infinite;
       transition: fill 0.2s ease;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .site-title {
@@ -326,7 +160,7 @@
       transform: translateX(24px);
     }
 
-    /* ===== TABS, CARDS etc ===== */
+    /* ===== TABS ===== */
     .tabs {
       display: flex;
       gap: 0.25rem;
@@ -335,7 +169,9 @@
       border-radius: 60px;
       margin-bottom: 2.2rem;
       transition: background 0.2s ease;
+      flex-wrap: wrap;
     }
+
     .tab-btn {
       flex: 1;
       border: none;
@@ -348,36 +184,44 @@
       cursor: pointer;
       transition: all 0.2s ease;
       font-family: 'Inter', sans-serif;
+      min-width: 100px;
     }
+
     .tab-btn.active {
       background: var(--bg-surface);
       color: var(--text-primary);
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
+
     .tab-btn:hover {
       background: rgba(255, 255, 255, 0.2);
     }
     body.dark .tab-btn:hover {
       background: rgba(255, 255, 255, 0.06);
     }
+
     .tab-content {
       display: none;
       animation: fadeSlide 0.3s ease;
     }
+
     .tab-content.active {
       display: block;
     }
+
     @keyframes fadeSlide {
       0% { opacity: 0; transform: translateY(6px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
+    /* ===== CARDS ===== */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.8rem;
       margin-top: 0.5rem;
     }
+
     .card {
       background: var(--card-bg);
       border-radius: 1.8rem;
@@ -388,20 +232,24 @@
       cursor: pointer;
       border: 1px solid var(--border-light);
     }
+
     .card:hover {
       transform: scale(1.03);
       box-shadow: var(--shadow-hover);
     }
+
     .card h3 {
       font-weight: 600;
       font-size: 1.3rem;
       color: var(--text-primary);
       margin-bottom: 0.5rem;
     }
+
     .card .card-sub {
       font-size: 0.9rem;
       color: var(--text-secondary);
     }
+
     .card-extra {
       margin-top: 1.2rem;
       background: var(--bg-surface);
@@ -414,21 +262,26 @@
       display: none;
       animation: fadeSlide 0.3s ease;
     }
-    .card-extra.show { display: block; }
 
+    .card-extra.show {
+      display: block;
+    }
+
+    /* ===== TOPOLOGIAS ===== */
     .topo-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.8rem;
       margin: 1.5rem 0 1.8rem;
     }
+
     .topo-btn {
       background: var(--bg-tab);
       border: none;
-      padding: 0.8rem 2.2rem;
+      padding: 0.7rem 1.8rem;
       border-radius: 60px;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-primary);
       cursor: pointer;
       transition: all 0.15s ease;
@@ -436,6 +289,7 @@
       box-shadow: var(--shadow);
       border: 1px solid transparent;
     }
+
     .topo-btn.active {
       background: var(--accent);
       color: #faf5f0;
@@ -445,11 +299,13 @@
     body.dark .topo-btn.active {
       color: #1f1a16;
     }
+
     .topo-btn:hover {
       transform: translateY(-2px);
       background: var(--accent-hover);
       color: #faf5f0;
     }
+
     .topo-detail {
       background: var(--bg-card);
       border-radius: 2rem;
@@ -458,16 +314,19 @@
       transition: background 0.2s;
       margin-top: 0.5rem;
     }
+
     .topo-detail h4 {
       font-size: 1.3rem;
       margin-bottom: 0.75rem;
       color: var(--text-primary);
     }
+
     .topo-detail p {
       color: var(--text-secondary);
       line-height: 1.6;
       margin-bottom: 1rem;
     }
+
     .vantagens {
       display: flex;
       flex-wrap: wrap;
@@ -490,6 +349,91 @@
       background-size: 1.2rem;
     }
 
+    /* ===== GLOSSÁRIO ===== */
+    .glossario-search {
+      margin-bottom: 1.8rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .glossario-search input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border-radius: 60px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: all 0.2s;
+      min-width: 200px;
+    }
+
+    .glossario-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(143, 128, 116, 0.2);
+    }
+
+    .glossario-search input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+
+    .glossario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .glossario-item {
+      background: var(--bg-card);
+      border-radius: 1.2rem;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid var(--border-light);
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .glossario-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .glossario-item .termo {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .glossario-item .definicao {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .glossario-item .categoria {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.2rem 0.8rem;
+      background: var(--bg-tab);
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .glossario-empty {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    /* ===== CALCULADORA ===== */
     .calculator {
       margin-top: 3.2rem;
       background: var(--bg-card);
@@ -498,31 +442,37 @@
       border: 1px solid var(--border-light);
       transition: background 0.2s;
     }
+
     .calculator h3 {
       font-size: 1.3rem;
       font-weight: 600;
       margin-bottom: 1.2rem;
       color: var(--text-primary);
     }
+
     .calc-group {
       display: flex;
       flex-wrap: wrap;
       gap: 1.8rem 2.5rem;
       margin-bottom: 1.8rem;
     }
+
     .calc-option {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
+
     .calc-option label {
       font-weight: 500;
       color: var(--text-secondary);
     }
+
     .calc-option div {
       display: flex;
       gap: 1.2rem;
     }
+
     .calc-option input[type="radio"] {
       accent-color: var(--accent);
       width: 18px;
@@ -530,6 +480,7 @@
       margin-right: 0.2rem;
       cursor: pointer;
     }
+
     .calc-btn {
       background: var(--accent);
       border: none;
@@ -548,6 +499,7 @@
       background: var(--accent-hover);
       transform: scale(1.01);
     }
+
     .result-box {
       margin-top: 1.5rem;
       padding: 1.2rem 1.8rem;
@@ -573,6 +525,7 @@
       margin-top: 0.3rem;
     }
 
+    /* ===== RESPONSIVO ===== */
     @media (max-width: 700px) {
       .app { padding: 1.5rem 1rem; }
       .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -583,9 +536,8 @@
       .topo-btn { width: 100%; text-align: center; }
       .calc-group { flex-direction: column; gap: 1rem; }
       .vantagens { flex-direction: column; }
-      .login-content h1 { font-size: 3.2rem; }
-      .login-content { padding: 2rem 1.8rem; }
-      .login-btn { padding: 0.9rem 2.5rem; font-size: 1rem; }
+      .glossario-grid { grid-template-columns: 1fr; }
+      .glossario-search { flex-direction: column; }
     }
 
     @media (max-width: 480px) {
@@ -593,135 +545,108 @@
       .gear { width: 34px; height: 34px; }
       .calc-option div { flex-wrap: wrap; }
     }
-
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg-tab); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
   </style>
 </head>
 <body>
-  <div class="app-wrapper" id="appWrapper">
-    <!-- TELA DE LOGIN -->
-    <div class="login-screen" id="loginScreen">
-      <div class="login-content">
-        <h1>
-          <svg class="gear-big" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <div class="app" id="app">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg class="gear" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4ZM12 2C14.2 2 16 3.8 16 6C16 8.2 14.2 10 12 10C9.8 10 8 8.2 8 6C8 3.8 9.8 2 12 2ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16ZM12 14C14.2 14 16 15.8 16 18C16 20.2 14.2 22 12 22C9.8 22 8 20.2 8 18C8 15.8 9.8 14 12 14ZM12 9C10.9 9 10 9.9 10 11C10 12.1 10.9 13 12 13C13.1 13 14 12.1 14 11C14 9.9 13.1 9 12 9ZM12 7C14.2 7 16 8.8 16 11C16 13.2 14.2 15 12 15C9.8 15 8 13.2 8 11C8 8.8 9.8 7 12 7Z"/>
           </svg>
-          Automação
-        </h1>
-        <div class="login-sub">chão de fábrica · controle inteligente</div>
-        <button class="login-btn" id="loginBtn">Acessar plataforma</button>
+        </div>
+        <span class="site-title">Automação</span>
+      </div>
+      <div class="toggle-wrapper">
+        <span class="toggle-label">Claro</span>
+        <div class="toggle-switch" id="toggleSwitch" role="button" tabindex="0" aria-label="Alternar modo claro/escuro">
+          <div class="dot"></div>
+        </div>
+        <span class="toggle-label">Escuro</span>
+      </div>
+    </header>
+
+    <!-- TABS -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="cabos" role="tab">Cabos Industriais</button>
+      <button class="tab-btn" data-tab="topologias" role="tab">Topologias</button>
+      <button class="tab-btn" data-tab="glossario" role="tab">📚 Glossário</button>
+    </div>
+
+    <!-- CABOS -->
+    <div class="tab-content active" id="tab-cabos" role="tabpanel">
+      <div class="cards-grid">
+        <div class="card" data-card="trancado">
+          <h3>Par Trançado</h3>
+          <div class="card-sub">Clique para detalhe</div>
+          <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos. Custo-benefício excelente para curtas distâncias.</div>
+        </div>
+        <div class="card" data-card="fibra">
+          <h3>Fibra Óptica</h3>
+          <div class="card-sub">Clique para detalhe</div>
+          <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial com alta velocidade e segurança.</div>
+        </div>
+        <div class="card" data-card="wireless">
+          <h3>Wireless Industrial</h3>
+          <div class="card-sub">Clique para detalhe</div>
+          <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso. Protocolos como WiFi 6, 5G e LoRa garantem confiabilidade.</div>
+        </div>
       </div>
     </div>
 
-    <!-- CONTEÚDO DO SITE -->
-    <div class="site-content">
-      <div class="app" id="app">
-        <!-- cabeçalho -->
-        <header class="header">
-          <div class="logo-area">
-            <div class="logo-icon">
-              <svg class="gear" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4ZM12 2C14.2 2 16 3.8 16 6C16 8.2 14.2 10 12 10C9.8 10 8 8.2 8 6C8 3.8 9.8 2 12 2ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16ZM12 14C14.2 14 16 15.8 16 18C16 20.2 14.2 22 12 22C9.8 22 8 20.2 8 18C8 15.8 9.8 14 12 14ZM12 9C10.9 9 10 9.9 10 11C10 12.1 10.9 13 12 13C13.1 13 14 12.1 14 11C14 9.9 13.1 9 12 9ZM12 7C14.2 7 16 8.8 16 11C16 13.2 14.2 15 12 15C9.8 15 8 13.2 8 11C8 8.8 9.8 7 12 7Z"/>
-              </svg>
-            </div>
-            <span class="site-title">Automação</span>
-          </div>
-          <div class="toggle-wrapper">
-            <span class="toggle-label">Claro</span>
-            <div class="toggle-switch" id="toggleSwitch" role="button" tabindex="0" aria-label="Alternar modo">
-              <div class="dot"></div>
-            </div>
-            <span class="toggle-label">Escuro</span>
-          </div>
-        </header>
+    <!-- TOPOLOGIAS -->
+    <div class="tab-content" id="tab-topologias" role="tabpanel">
+      <div class="topo-buttons">
+        <button class="topo-btn active" data-topo="estrela">⭐ Estrela</button>
+        <button class="topo-btn" data-topo="barramento">➖ Barramento</button>
+        <button class="topo-btn" data-topo="anel">🔄 Anel</button>
+        <button class="topo-btn" data-topo="malha">🔀 Malha</button>
+      </div>
+      <div class="topo-detail" id="topoDetail"></div>
+    </div>
 
-        <!-- TABS -->
-        <div class="tabs" role="tablist">
-          <button class="tab-btn active" data-tab="cabos" role="tab">Cabos Industriais</button>
-          <button class="tab-btn" data-tab="topologias" role="tab">Topologias</button>
-        </div>
+    <!-- GLOSSÁRIO -->
+    <div class="tab-content" id="tab-glossario" role="tabpanel">
+      <div class="glossario-search">
+        <input type="text" id="glossarioBusca" placeholder="🔍 Buscar termo..." aria-label="Buscar no glossário">
+        <span style="color: var(--text-secondary); font-size: 0.9rem; display: flex; align-items: center;" id="glossarioCount">Mostrando todos os termos</span>
+      </div>
+      <div class="glossario-grid" id="glossarioGrid">
+        <!-- Os termos serão inseridos via JavaScript -->
+      </div>
+    </div>
 
-        <div class="tab-content active" id="tab-cabos" role="tabpanel">
-          <div class="cards-grid">
-            <div class="card" data-card="trancado">
-              <h3>Par Trançado</h3>
-              <div class="card-sub">Clique para detalhe</div>
-              <div class="card-extra" id="extra-trancado">Utilizado em redes Ethernet em áreas com baixa interferência. Comum em CLPs e IHM próximos.</div>
-            </div>
-            <div class="card" data-card="fibra">
-              <h3>Fibra Óptica</h3>
-              <div class="card-sub">Clique para detalhe</div>
-              <div class="card-extra" id="extra-fibra">Ideal para longas distâncias e ambientes com alto ruído eletromagnético. Backbone industrial.</div>
-            </div>
-            <div class="card" data-card="wireless">
-              <h3>Wireless</h3>
-              <div class="card-sub">Clique para detalhe</div>
-              <div class="card-extra" id="extra-wireless">Usado em AGVs, robôs móveis e pontos de difícil acesso, com bom sinal e segurança.</div>
-            </div>
+    <!-- CALCULADORA -->
+    <div class="calculator">
+      <h3>🧩 Assistente de Recomendação</h3>
+      <div class="calc-group">
+        <div class="calc-option">
+          <label>Minha fábrica tem muito ruído elétrico?</label>
+          <div>
+            <label><input type="radio" name="ruido" value="sim"> Sim</label>
+            <label><input type="radio" name="ruido" value="nao" checked> Não</label>
           </div>
         </div>
-
-        <div class="tab-content" id="tab-topologias" role="tabpanel">
-          <div class="topo-buttons">
-            <button class="topo-btn active" data-topo="estrela">⭐ Layout em Estrela</button>
-            <button class="topo-btn" data-topo="barramento">➖ Layout em Barramento</button>
-          </div>
-          <div class="topo-detail" id="topoDetail"></div>
-        </div>
-
-        <div class="calculator">
-          <h3>🧩 Assistente de Recomendação</h3>
-          <div class="calc-group">
-            <div class="calc-option">
-              <label>Minha fábrica tem muito ruído elétrico?</label>
-              <div>
-                <label><input type="radio" name="ruido" value="sim"> Sim</label>
-                <label><input type="radio" name="ruido" value="nao" checked> Não</label>
-              </div>
-            </div>
-            <div class="calc-option">
-              <label>A distância entre os pontos é longa?</label>
-              <div>
-                <label><input type="radio" name="distancia" value="sim"> Sim</label>
-                <label><input type="radio" name="distancia" value="nao" checked> Não</label>
-              </div>
-            </div>
-          </div>
-          <button class="calc-btn" id="calcBtn">Calcular Recomendação</button>
-          <div class="result-box" id="resultBox">
-            <strong id="resultTitle"></strong>
-            <span id="resultDesc"></span>
+        <div class="calc-option">
+          <label>A distância entre os pontos é longa?</label>
+          <div>
+            <label><input type="radio" name="distancia" value="sim"> Sim</label>
+            <label><input type="radio" name="distancia" value="nao" checked> Não</label>
           </div>
         </div>
+      </div>
+      <button class="calc-btn" id="calcBtn">Calcular Recomendação</button>
+      <div class="result-box" id="resultBox">
+        <strong id="resultTitle"></strong>
+        <span id="resultDesc"></span>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // ===== BOTÃO DE ACESSO (login → site) =====
-      const wrapper = document.getElementById('appWrapper');
-      const loginScreen = document.getElementById('loginScreen');
-      const loginBtn = document.getElementById('loginBtn');
-      let isLoggedIn = false;
-
-      loginBtn.addEventListener('click', function() {
-        if (isLoggedIn) return;
-        isLoggedIn = true;
-        
-        // Animação de saída do login
-        loginScreen.classList.add('exit');
-        
-        // Após a animação, desliza o wrapper
-        setTimeout(() => {
-          wrapper.classList.add('shifted');
-          // Ajusta o blur/brilho do fundo (já transiciona)
-          loginScreen.style.backdropFilter = 'blur(2px) brightness(1.02)';
-        }, 400);
-      });
-
       // ===== DARK MODE TOGGLE =====
       const toggle = document.getElementById('toggleSwitch');
       const body = document.body;
@@ -751,7 +676,8 @@
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = {
         cabos: document.getElementById('tab-cabos'),
-        topologias: document.getElementById('tab-topologias')
+        topologias: document.getElementById('tab-topologias'),
+        glossario: document.getElementById('tab-glossario')
       };
 
       tabBtns.forEach(btn => {
@@ -781,7 +707,7 @@
       const topoData = {
         estrela: {
           titulo: '⭐ Layout em Estrela',
-          descricao: 'Cada dispositivo se conecta a um switch ou hub central. No chão de fábrica, é comum em células de produção e ilhas de automação, oferecendo alta flexibilidade.',
+          descricao: 'Cada dispositivo se conecta a um switch ou hub central. No chão de fábrica, é comum em células de produção e ilhas de automação, oferecendo alta flexibilidade e fácil diagnóstico.',
           vantagens: ['Isolamento de falhas', 'Fácil manutenção', 'Expansão simples'],
           desvantagens: ['Dependência do switch central', 'Mais cabos necessários']
         },
@@ -790,6 +716,18 @@
           descricao: 'Todos os dispositivos compartilham um único cabo backbone. Usado em redes RS-485, Modbus e em sistemas mais antigos ou com poucos nós.',
           vantagens: ['Menos cabos', 'Custo reduzido', 'Simples para pequenas redes'],
           desvantagens: ['Falha no cabo afeta toda a rede', 'Limite de dispositivos', 'Dificuldade em isolar problemas']
+        },
+        anel: {
+          titulo: '🔄 Layout em Anel',
+          descricao: 'Os dispositivos se conectam em um circuito fechado. Se um cabo falha, o tráfego é redirecionado pelo caminho inverso (rede em anel com redundância).',
+          vantagens: ['Redundância nativa', 'Distribuição de carga', 'Alta confiabilidade'],
+          desvantagens: ['Complexidade de configuração', 'Custo maior de implementação']
+        },
+        malha: {
+          titulo: '🔀 Layout em Malha',
+          descricao: 'Todos os dispositivos se conectam entre si, formando múltiplos caminhos. É a topologia mais redundante e confiável para aplicações críticas.',
+          vantagens: ['Alta redundância', 'Tolerância a falhas', 'Excelente desempenho'],
+          desvantagens: ['Alto custo de cabos', 'Complexidade de gerenciamento']
         }
       };
 
@@ -818,4 +756,56 @@
       renderTopo('estrela');
 
       // ===== CALCULADORA =====
-     
+      const calcBtn = document.getElementById('calcBtn');
+      const resultBox = document.getElementById('resultBox');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultDesc = document.getElementById('resultDesc');
+
+      function getSelectedValue(name) {
+        const radios = document.querySelectorAll(`input[name="${name}"]`);
+        for (let r of radios) {
+          if (r.checked) return r.value;
+        }
+        return 'nao';
+      }
+
+      calcBtn.addEventListener('click', function() {
+        const ruido = getSelectedValue('ruido');
+        const distancia = getSelectedValue('distancia');
+
+        let recomendacao = '';
+        let explicacao = '';
+
+        if (ruido === 'sim' && distancia === 'sim') {
+          recomendacao = 'Fibra Óptica';
+          explicacao = 'Imune a ruídos eletromagnéticos e ideal para longas distâncias.';
+        } else if (ruido === 'sim' && distancia === 'nao') {
+          recomendacao = 'Par Trançado Blindado (STP)';
+          explicacao = 'Protege contra o ruído em curtas/médias distâncias.';
+        } else if (ruido === 'nao' && distancia === 'sim') {
+          recomendacao = 'Fibra Óptica ou Wireless de Longo Alcance';
+          explicacao = 'Foco na cobertura da distância.';
+        } else {
+          recomendacao = 'Par Trançado Comum (UTP) ou Wireless';
+          explicacao = 'Solução de menor custo e fácil instalação.';
+        }
+
+        resultTitle.innerText = `✅ ${recomendacao}`;
+        resultDesc.innerText = explicacao;
+        resultBox.classList.add('show');
+      });
+
+      // ===== GLOSSÁRIO =====
+      const termos = [
+        { termo: 'CLP', definicao: 'Controlador Lógico Programável. Computador industrial usado para automatizar processos, como esteiras, robôs e máquinas. É o "cérebro" da automação industrial.', categoria: 'Equipamentos' },
+        { termo: 'IHM', definicao: 'Interface Homem-Máquina. Tela onde operadores interagem com máquinas e sistemas, permitindo monitoramento e controle de processos.', categoria: 'Equipamentos' },
+        { termo: 'SCADA', definicao: 'Sistema de Supervisão e Aquisição de Dados. Software que monitora e controla processos industriais à distância, coletando dados em tempo real.', categoria: 'Sistemas' },
+        { termo: 'Modbus', definicao: 'Protocolo de comunicação serial amplamente usado em automação industrial para conectar dispositivos como CLPs, sensores e atuadores.', categoria: 'Protocolos' },
+        { termo: 'Profinet', definicao: 'Protocolo de comunicação industrial baseado em Ethernet, padrão da Siemens. Oferece alta velocidade e integração com sistemas de automação.', categoria: 'Protocolos' },
+        { termo: 'EtherNet/IP', definicao: 'Protocolo de comunicação industrial que usa Ethernet, comum na Rockwell Automation. Permite integração com sistemas de TI.', categoria: 'Protocolos' },
+        { termo: 'Sensor', definicao: 'Dispositivo que detecta mudanças no ambiente (temperatura, pressão, movimento, etc.) e converte em sinais elétricos para o CLP.', categoria: 'Componentes' },
+        { termo: 'Atuador', definicao: 'Dispositivo que executa uma ação física (abrir válvula, ligar motor, mover braço) baseado em um sinal de controle do CLP.', categoria: 'Componentes' },
+        { termo: 'I/O', definicao: 'Entrada/Saída (Input/Output). Pontos onde o CLP recebe sinais de sensores (entrada) e envia comandos para atuadores (saída).', categoria: 'Conceitos' },
+        { termo: 'Redundância', definicao: 'Ter componentes extras (backup) para garantir que o sistema continue funcionando se um falhar. Essencial para sistemas críticos.', categoria: 'Conceitos' },
+        { termo: 'Latência', definicao: 'Tempo de atraso entre o envio e o recebimento de um dado em uma rede. Baixa latência é crucial para controle em tempo real.', categoria: 'Conceitos' },
+        { termo: 'Backbone', definicao: 'C
